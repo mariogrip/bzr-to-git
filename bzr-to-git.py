@@ -73,6 +73,12 @@ f = open(changelog_file, "w")
 changelog.write_to_open_file(f)
 f.close()
 
+# Remove source format since jenkins does not support it
+try:
+    os.remove(outdir+"/debian/source/format")
+except Exception as e:
+    print("no source format to remove")
+
 if args.git:
     repo = Repo(outdir)
     git = repo.git
