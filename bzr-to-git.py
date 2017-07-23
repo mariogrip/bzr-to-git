@@ -18,7 +18,7 @@ outdir=args.outdir
 if not args.outdir:
     outdir=args.bzr.split("/")[-1]
 
-#subprocess.call(["./do_convert.sh", args.bzr, outdir])
+subprocess.call(["./do_convert.sh", args.bzr, outdir])
 changelog_file = outdir+"/debian/changelog"
 
 changelog = Changelog()
@@ -55,7 +55,7 @@ dist = changelog.distributions
 if args.dist:
     dist = args.dist
 
-date_now = datetime.now(tzlocal()).strftime("%A, %d %B %Y %X %z")
+date_now = datetime.now(tzlocal()).strftime("%a, %d %b %Y %X %z")
 
 changelog.new_block(package=changelog.get_package(),
                     version=Version(n_version),
