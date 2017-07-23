@@ -1,4 +1,5 @@
-import subprocess, argparse
+import subprocess, argparse, os
+import urllib.request
 from debian.changelog import Changelog, Version
 from datetime import *
 from dateutil.tz import *
@@ -11,6 +12,7 @@ parser.add_argument("-g", '--git', type=str, help="git remote url")
 parser.add_argument("-p", "--push", action='store_true', help="do git push")
 parser.add_argument("-b", "--branch", type=str, help="github branch to set (default: [dist])")
 parser.add_argument("-o", "--outdir", type=str, help="output directory")
+parser.add_argument("-j", "--no_jenkinsfile", action='store_true')
 
 args = parser.parse_args()
 
@@ -78,6 +80,12 @@ try:
     os.remove(outdir+"/debian/source/format")
 except Exception as e:
     print("no source format to remove")
+
+
+# Add jenkinsfile
+if not args.no_jenkinsfile:
+    urllib.request.urlretrieve("https://raw.githubusercontent.com/ubports/build-tools/master/Jenkinsfile", outdir+"/Jenkinsfile")
+
 
 if args.git:
     repo = Repo(outdir)
